@@ -1,25 +1,42 @@
-name: Create Release ZIP
+name: Release Creation
 
 on:
   push:
     tags:
-      - 'v*' # Will trigger on any tag that starts with 'v', like v1.0.0
+      - 'v*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Get version from tag
+      - uses: actions/checkout@v2
+
+      # Extract version from tag
+      - name: Extract version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
-        
-      - name: Create ZIP file
-        run: |
-          zip -r potion-toxicity-v${{ steps.get_version.outputs.VERSION }}.zip potion-toxicity.js module.json styles/ packs/ LICENSE README.md
+
+      # Update version and download URL in module.json
+      - name: Update module.json
+        id: module_info
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: module.json
+          field: version
+          value: ${{ steps.get_version.outputs.VERSION }}
           
+      - name: Update download URL
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: module.json
+          field: download
+          value: https://github.com/gearstra/vtt-potion-toxicity-5e/releases/download/v${{ steps.get_version.outputs.VERSION }}/module.zip
+
+      # Create zip file
+      - name: Create ZIP archive
+        run: zip -r ./module.zip *
+
+      # Create GitHub release
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -30,25 +47,25 @@ jobs:
           release_name: Release ${{ steps.get_version.outputs.VERSION }}
           draft: false
           prerelease: false
-          
-      - name: Upload Release Asset
+
+      # Upload the module.json file
+      - name: Upload module.json
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./potion-toxicity-v${{ steps.get_version.outputs.VERSION }}.zip
-          asset_name: potion-toxicity-v${{ steps.get_version.outputs.VERSION }}.zip
+          asset_path: ./module.json
+          asset_name: module.json
+          asset_content_type: application/json
+
+      # Upload the module zip
+      - name: Upload module zip
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./module.zip
+          asset_name: module.zip
           asset_content_type: application/zip
-          
-      - name: Update Latest Release
-        run: |
-          cp module.json module.json.bak
-          VERSION=${{ steps.get_version.outputs.VERSION }}
-          DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v${VERSION}/potion-toxicity-v${VERSION}.zip
-          jq --arg v "$VERSION" --arg url "$DOWNLOAD_URL" '.version = $v | .download = $url' module.json.bak > module.json
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'actions@github.com'
-          git add module.json
-          git commit -m "Update download URL for version $VERSION"
-          git push
