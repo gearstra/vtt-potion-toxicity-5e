@@ -19,7 +19,7 @@
     },
     {
       "type": 0,
-      "text": "Mäßige Vergiftung: Der Charakter leidet eine Runde lang unter dem Zustand „vergiftet" (mit Nachteilen bei Angriffswürfen und Fähigkeitsprüfungen) 1d6 Giftschaden",
+      "text": "Mäßige Vergiftung: Der Charakter leidet eine Runde lang unter dem Zustand \"vergiftet\" (mit Nachteilen bei Angriffswürfen und Fähigkeitsprüfungen) 1d6 Giftschaden",
       "img": "icons/svg/poison.svg",
       "weight": 3,
       "range": [5, 7]
