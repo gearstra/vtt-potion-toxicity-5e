@@ -1,0 +1,71 @@
+name: Release Creation
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Extract version from tag
+      - name: Extract version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
+
+      # Update version and download URL in module.json
+      - name: Update module.json
+        id: module_info
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: module.json
+          field: version
+          value: ${{ steps.get_version.outputs.VERSION }}
+          
+      - name: Update download URL
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: module.json
+          field: download
+          value: https://github.com/gearstra/vtt-potion-toxicity-5e/releases/download/v${{ steps.get_version.outputs.VERSION }}/module.zip
+
+      # Create zip file
+      - name: Create ZIP archive
+        run: zip -r ./module.zip *
+
+      # Create GitHub release
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ steps.get_version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+
+      # Upload the module.json file
+      - name: Upload module.json
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./module.json
+          asset_name: module.json
+          asset_content_type: application/json
+
+      # Upload the module zip
+      - name: Upload module zip
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./module.zip
+          asset_name: module.zip
+          asset_content_type: application/zip
