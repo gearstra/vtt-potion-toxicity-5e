@@ -1,0 +1,54 @@
+name: Create Release ZIP
+
+on:
+  push:
+    tags:
+      - 'v*' # Will trigger on any tag that starts with 'v', like v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Get version from tag
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
+        
+      - name: Create ZIP file
+        run: |
+          zip -r potion-toxicity-v${{ steps.get_version.outputs.VERSION }}.zip potion-toxicity.js module.json styles/ packs/ LICENSE README.md
+          
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ steps.get_version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+          
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./potion-toxicity-v${{ steps.get_version.outputs.VERSION }}.zip
+          asset_name: potion-toxicity-v${{ steps.get_version.outputs.VERSION }}.zip
+          asset_content_type: application/zip
+          
+      - name: Update Latest Release
+        run: |
+          cp module.json module.json.bak
+          VERSION=${{ steps.get_version.outputs.VERSION }}
+          DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v${VERSION}/potion-toxicity-v${VERSION}.zip
+          jq --arg v "$VERSION" --arg url "$DOWNLOAD_URL" '.version = $v | .download = $url' module.json.bak > module.json
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add module.json
+          git commit -m "Update download URL for version $VERSION"
+          git push
