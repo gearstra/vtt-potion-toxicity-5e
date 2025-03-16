@@ -1,0 +1,46 @@
+{
+  "id": "potion-toxicity",
+  "title": "Potion Toxicity System",
+  "description": "A system for tracking potion toxicity in DnD 5e with risk rolls and effects",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  },
+  "authors": [
+    {
+      "name": "Your Name"
+    }
+  ],
+  "esmodules": [
+    "potion-toxicity.js"
+  ],
+  "styles": [
+    "styles/potion-toxicity.css"
+  ],
+  "packs": [
+    {
+      "name": "toxicity-items",
+      "label": "Toxicity Potions",
+      "path": "packs/toxicity-items.db",
+      "type": "Item"
+    },
+    {
+      "name": "toxicity-tables",
+      "label": "Toxicity Tables",
+      "path": "packs/toxicity-tables.db",
+      "type": "RollTable"
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "2.0.0"
+        }
+      }
+    ]
+  }
+}

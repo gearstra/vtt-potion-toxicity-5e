@@ -1,0 +1,49 @@
+{
+  "name": "Toxicity Effects",
+  "img": "icons/svg/poison.svg",
+  "description": "Toxicity overflow effects",
+  "results": [
+    {
+      "type": 0,
+      "text": "Geringes Unbehagen: Der Charakter verspürt kurzzeitig Übelkeit oder Schwindel. Magenverstimmung, aber nicht genug um die Leistung zu beeinträchtigen.",
+      "img": "icons/svg/poison.svg",
+      "weight": 2,
+      "range": [1, 3]
+    },
+    {
+      "type": 0,
+      "text": "Leichte Beeinträchtigung: Leichte Desorientierung setzt ein. -1 für 1 Std. auf Fähigkeitsüberprüfung oder einen Angriffswurf.",
+      "img": "icons/svg/poison.svg",
+      "weight": 1,
+      "range": [4, 4]
+    },
+    {
+      "type": 0,
+      "text": "Mäßige Vergiftung: Der Charakter leidet eine Runde lang unter dem Zustand „vergiftet" (mit Nachteilen bei Angriffswürfen und Fähigkeitsprüfungen) 1d6 Giftschaden",
+      "img": "icons/svg/poison.svg",
+      "weight": 3,
+      "range": [5, 7]
+    },
+    {
+      "type": 0,
+      "text": "Schwere Reaktion: Der Charakter wird für 1 Runde handlungsunfähig. 2d6 Giftschaden + \"vergiftet\". Am Ende dieser Runde muss er einen Konstitutionsschutzwurf machen (DC = 10 + Modifikator) oder die Auswirkungen bleiben eine weitere Runde bestehen.",
+      "img": "icons/svg/poison.svg",
+      "weight": 2,
+      "range": [8, 9]
+    },
+    {
+      "type": 0,
+      "text": "Kritische Beeinträchtigung: Am Boden liegend für 1 Runde bewusstlos + Vergiftet + 3d6 Giftschaden.",
+      "img": "icons/svg/poison.svg",
+      "weight": 2,
+      "range": [10, 11]
+    },
+    {
+      "type": 0,
+      "text": "Katastrophale Überdosierung: Der Charakter fällt in ein Koma und bleibt bewusstlos + Vergiftet + 3d6 Giftschaden",
+      "img": "icons/svg/poison.svg",
+      "weight": 7,
+      "range": [12, 18]
+    }
+  ]
+}

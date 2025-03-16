@@ -1,0 +1,16 @@
+/* Styling for the toxicity display in character sheet */
+.resource-toxicity {
+  border: 1px solid #782e22;
+  background: rgba(120, 46, 34, 0.1);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.toxicity-warning {
+  color: #782e22;
+  font-weight: bold;
+}
+
+.toxicity-safe {
+  color: #2e7834;
+}

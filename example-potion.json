@@ -1,0 +1,56 @@
+{
+  "name": "Trank der Heilung (Leicht)",
+  "type": "consumable",
+  "img": "icons/consumables/potions/bottle-round-cork-red.webp",
+  "system": {
+    "description": {
+      "value": "<p>Ein leichter Heiltrank mit geringer Toxizität.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 0.5,
+    "price": {
+      "value": 25,
+      "denomination": "gp"
+    },
+    "identified": true,
+    "consumableType": "potion",
+    "uses": {
+      "value": 1,
+      "max": 1,
+      "per": "charges",
+      "autoDestroy": true
+    },
+    "actionType": "heal",
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "duration": {
+      "value": null,
+      "units": "instant"
+    },
+    "damage": {
+      "parts": [
+        [
+          "2d4+2",
+          "healing"
+        ]
+      ]
+    }
+  },
+  "flags": {
+    "potion-toxicity": {
+      "toxicityValue": 1
+    }
+  }
+}
