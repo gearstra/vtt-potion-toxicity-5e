@@ -43,7 +43,7 @@
       "text": "Katastrophale Überdosierung: Der Charakter fällt in ein Koma und bleibt bewusstlos + Vergiftet + 3d6 Giftschaden",
       "img": "icons/svg/poison.svg",
       "weight": 7,
-      "range": [12, 18]
+      "range": [12, 22]
     }
   ]
 }

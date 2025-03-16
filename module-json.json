@@ -20,16 +20,26 @@
   ],
   "packs": [
     {
-      "name": "toxicity-items",
+      "name": "toxicity-potions",
       "label": "Toxicity Potions",
-      "path": "packs/toxicity-items.db",
-      "type": "Item"
+      "path": "./packs/potions",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "toxicity-tables",
       "label": "Toxicity Tables",
-      "path": "packs/toxicity-tables.db",
-      "type": "RollTable"
+      "path": "./packs/tables",
+      "type": "RollTable",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     }
   ],
   "relationships": {
